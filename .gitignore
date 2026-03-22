@@ -1,0 +1,8 @@
+# Ignore compiled executables
+main
+keygen
+*.exe
+*.o
+
+# Ignore third-party dependencies
+Raylib/
