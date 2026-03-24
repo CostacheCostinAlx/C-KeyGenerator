@@ -19,17 +19,20 @@ int main(void) {
     
     //bool GuiCheckBox(Rectangle bounds, const char *text, bool *checked);
     //bool GuiButton(Rectangle bounds, const char *text);
+    //bool GuiTextBox(Rectangle bounds, char *text, int textSize, bool editMode); when the cursor is on the box, the bool gets true , if
+    // it is hardcoded to be false it will never become true which means you can never copy the text inside
+    //SetClipboardText(const char *) copies the char to clipboard
 
-
-    const int screenWidth = 800;
+    const int screenWidth = 1200;
     const int screenHeight = 450;
     
     float GroupLenght = 0.0f;
     float GroupNumber = 0.0f;
 
-    char generatedKey[256]="NULL";
+    char generatedKey[500]="NULL";
 
     bool useNumbers = 0;
+    bool GuiTextLabel = false;
     
     srand((unsigned int)time(NULL));
  
@@ -51,56 +54,89 @@ int main(void) {
             ClearBackground(RAYWHITE); 
             //DrawText("Gui Created", 150, 200, 20, DARKGRAY);
             GuiSlider((Rectangle){250,50,200,20} ,"Group Lenght", TextFormat("%i", (int)GroupLenght), &GroupLenght, 1.0f, 10.0F);
-            GuiSlider((Rectangle){250,100,200,20} ,"Number of Groups", TextFormat("%i", (int)GroupNumber), &GroupNumber, 1.0f, 5.0F);
+            GuiSlider((Rectangle){250,100,200,20} ,"Number of Groups", TextFormat("%i", (int)GroupNumber), &GroupNumber, 1.0f, 10.0F);
     
-            GuiCheckBox((Rectangle){ 250, 150, 24, 24 }, "Use Alphanumeric", &useNumbers);
-            if(GuiButton((Rectangle){ 350, 200, 300, 50 }, "Generate Key")){
+            GuiCheckBox((Rectangle){ 250, 150, 24, 24 }, "Use Numbers", &useNumbers);
+            if(GuiButton((Rectangle){ 350, 200, 300, 50 }, "Generate Key"))
+            {
                 if(useNumbers == true)
                 {
                     const char Key[256] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
                     char c;
-                    
+                    int counter = 0;
                     
                     int size = 63;
-                    int counter =0;
-
-                    
-                    for(int i=0; i<GroupNumber; i++)
+                    if (GroupNumber == 1)
                     {
-                        for(int j=0; j<GroupLenght; j++)
+                        for(int j=0; j<GroupLenght-1; j++)
                         {
                             int random_char_index = rand() % 62;
                             c=Key[random_char_index];
                             generatedKey[counter++]=c;
                         }
-                        if (i < GroupNumber - 1) 
-                        generatedKey[counter++] = '-';
+                        generatedKey[counter]='\0';
                     }
-                    generatedKey[counter]='\0';
-                }
-                else{
-                    const char Key[256] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                    
-                    char c;
-                    
-                    int size = 53;
-                    int counter =0;
-
-                    for(int i=0; i<GroupNumber; i++)
+                    else if (GroupLenght == 1)
                     {
-                        for(int j=0; j<GroupLenght; j++)
+
+                        int random_char_index = rand() % 62;
+                        c=Key[random_char_index];
+                        generatedKey[counter++]=c;
+
+                    }
+                    else for(int i=0; i<GroupNumber-1; i++)
+                    {
+                        for(int j=0; j<GroupLenght-1; j++)
                         {
-                            int random_char_index = rand() % 53;
+                            int random_char_index = rand() % 62;
                             c=Key[random_char_index];
                             generatedKey[counter++]=c;
                         }
-                        if (i < GroupNumber - 1) 
+                        if(i < GroupNumber - 2) 
                         generatedKey[counter++] = '-';
                     }
-                    generatedKey[counter]='\0';   
+                    generatedKey[counter]='\0';
+                    SetClipboardText(generatedKey);
+                }
+                else{
+                    const char Key[256] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    char c;
+                    
+                    int size = 53;
+                    int counter = 0;
+                    if (GroupNumber == 1)
+                    {
+                        for(int j=0; j<GroupLenght-1; j++)
+                        {
+                            int random_char_index = rand() % 52;
+                            c=Key[random_char_index];
+                            generatedKey[counter++]=c;
+                        }
+                        generatedKey[counter]='\0';
+                    }
+                    else if (GroupLenght == 1)
+                    {
+
+                        int random_char_index = rand() % 52;
+                        c=Key[random_char_index];
+                        generatedKey[counter++]=c;
+
+                    }
+                    else for(int i=0; i<GroupNumber-1; i++)
+                    {
+                        for(int j=0; j<GroupLenght-1; j++)
+                        {
+                            int random_char_index = rand() % 52;
+                            c=Key[random_char_index];
+                            generatedKey[counter++]=c;
+                        }
+                        if (i < GroupNumber - 2) 
+                        generatedKey[counter++] = '-';
+                    }
+                    generatedKey[counter]='\0';
+                    SetClipboardText(generatedKey);
                 }  
-            }
-            DrawText(generatedKey, 100, 300, 30, BLACK);
+            }   
         EndDrawing();
     }
 
