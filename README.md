@@ -20,19 +20,25 @@ sudo apt update
 sudo apt install build-essential fonts-dejavu
 ```
 
+
 ## How to Compile
 
-I have included a bash script to make compilation very easy.
+### 1. Download Raylib directly into the project folder
+```bash
+git clone [https://github.com/raysan5/raylib.git](https://github.com/raysan5/raylib.git)
+```
 
-1. Make sure the build script has execution permissions (you only need to do this once):
-   ```bash
-   chmod +x build.sh
-   ```
-2. Run the build script:
-   ```bash
-   ./build.sh
-   ```
-
+### 2. Compile the Raylib static library
+```bash
+cd raylib/src
+make PLATFORM=PLATFORM_DESKTOP
+cd ../..
+```
+### 3. Make the build script executable and compile the app
+```bash
+chmod +x build.sh
+./build.sh
+```
 ## How to Run
 
 After a successful compilation, you can start the key generator like this:
